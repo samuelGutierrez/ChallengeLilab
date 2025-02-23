@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClubRecreativo.Infrastructu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClubRecreativo.Test", "..\ClubRecreativo.Test\ClubRecreativo.Test.csproj", "{033EFC8D-D0FB-4605-AA9D-E08D7060759A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClubRecreativo.Shared", "..\ClubRecreativo.Shared\ClubRecreativo.Shared.csproj", "{CC625E9D-06BF-4B2F-8778-19183176E079}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{033EFC8D-D0FB-4605-AA9D-E08D7060759A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{033EFC8D-D0FB-4605-AA9D-E08D7060759A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{033EFC8D-D0FB-4605-AA9D-E08D7060759A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC625E9D-06BF-4B2F-8778-19183176E079}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC625E9D-06BF-4B2F-8778-19183176E079}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC625E9D-06BF-4B2F-8778-19183176E079}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC625E9D-06BF-4B2F-8778-19183176E079}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

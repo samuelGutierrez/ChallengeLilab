@@ -1,8 +1,12 @@
 using ClubRecreativo.Extensions;
 using ClubRecreativo.Application;
 using ClubRecreativo.Infrastructure.DependencyInjection;
+using ClubRecreativo.Api.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Configuración de Serilog
+builder.Host.UseSerilogConfiguration();
 
 // Configuración de servicios
 builder.Services.AddControllers();

@@ -1,6 +1,7 @@
 ﻿using ClubRecreativo.Application.Interfaces;
 using ClubRecreativo.Domain.Entities;
 using ClubRecreativo.Domain.Interfaces;
+using ClubRecreativo.Shared.Exceptions;
 
 namespace ClubRecreativo.Application.Services
 {
@@ -20,7 +21,11 @@ namespace ClubRecreativo.Application.Services
 
         public async Task<ValetParking> ObtenerPorIdAsync(int id)
         {
-            return await _valetParkingRepository.GetValetParkingByIdAsync(id);
+            var valet = await _valetParkingRepository.GetValetParkingByIdAsync(id);
+            if (valet == null)
+                throw new NotFoundException($"El valet parking con ID {id} no fue encontrado.");
+
+            return valet;
         }
     }
 }

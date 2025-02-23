@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ClubRecreativo.Domain\ClubRecreativo.Domain.csproj" />
+    <ProjectReference Include="..\ClubRecreativo.Shared\ClubRecreativo.Shared.csproj" />
   </ItemGroup>
 
 </Project>

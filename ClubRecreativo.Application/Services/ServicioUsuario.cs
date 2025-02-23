@@ -1,6 +1,7 @@
 ﻿using ClubRecreativo.Application.Interfaces;
 using ClubRecreativo.Domain.Entities;
 using ClubRecreativo.Domain.Interfaces;
+using ClubRecreativo.Shared.Exceptions;
 
 namespace ClubRecreativo.Application.Services
 {
@@ -15,7 +16,11 @@ namespace ClubRecreativo.Application.Services
 
         public async Task<Usuario> AutenticarAsync(string usuario, string contrasena)
         {
-            return await _usuarioRepository.GetUsuarioPorCredencialesAsync(usuario, contrasena);
+            var user = await _usuarioRepository.GetUsuarioPorCredencialesAsync(usuario, contrasena);
+            if (user == null)
+                throw new BusinessException("Credenciales inválidas.");
+
+            return user;
         }
 
         public async Task<IEnumerable<Usuario>> ObtenerTodosAsync()
@@ -25,7 +30,11 @@ namespace ClubRecreativo.Application.Services
 
         public async Task<Usuario> ObtenerPorIdAsync(int id)
         {
-            return await _usuarioRepository.GetByIdAsync(id);
+            var usuario = await _usuarioRepository.GetByIdAsync(id);
+            if (usuario == null)
+                throw new NotFoundException($"El usuario con ID {id} no fue encontrado.");
+
+            return usuario;
         }
 
         public async Task CrearAsync(Usuario usuario)

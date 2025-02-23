@@ -1,6 +1,7 @@
 ﻿using ClubRecreativo.Application.Interfaces;
 using ClubRecreativo.Domain.Entities;
 using ClubRecreativo.Domain.Interfaces;
+using ClubRecreativo.Shared.Exceptions;
 
 namespace ClubRecreativo.Application.Services
 {
@@ -20,7 +21,11 @@ namespace ClubRecreativo.Application.Services
 
         public async Task<UbicacionEstacionamiento> ObtenerPorIdAsync(int id)
         {
-            return await _ubicacionRepository.GetUbicacionByIdAsync(id);
+            var ubicacion = await _ubicacionRepository.GetUbicacionByIdAsync(id);
+            if (ubicacion == null)
+                throw new NotFoundException($"La ubicación con ID {id} no fue encontrada.");
+
+            return ubicacion;
         }
     }
 }

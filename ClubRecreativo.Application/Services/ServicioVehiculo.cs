@@ -1,6 +1,7 @@
 ﻿using ClubRecreativo.Application.Interfaces;
 using ClubRecreativo.Domain.Entities;
 using ClubRecreativo.Domain.Interfaces;
+using ClubRecreativo.Shared.Exceptions;
 
 namespace ClubRecreativo.Application.Services
 {
@@ -27,11 +28,14 @@ namespace ClubRecreativo.Application.Services
         public async Task RegistrarSalidaVehiculoAsync(int vehiculoId)
         {
             var vehiculo = await _vehiculoRepository.GetVehiculoByIdAsync(vehiculoId);
-            if (vehiculo != null && vehiculo.FechaSalida == null)
-            {
-                vehiculo.FechaSalida = DateTime.UtcNow;
-                await _vehiculoRepository.UpdateAsync(vehiculo);
-            }
+            if (vehiculo == null)
+                throw new NotFoundException($"Vehículo con ID {vehiculoId} no fue encontrado.");
+
+            if (vehiculo.FechaSalida != null)
+                throw new BusinessException("El vehículo ya ha registrado su salida.");
+
+            vehiculo.FechaSalida = DateTime.UtcNow;
+            await _vehiculoRepository.UpdateAsync(vehiculo);
         }
     }
 }

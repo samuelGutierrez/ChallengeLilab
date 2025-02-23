@@ -1,6 +1,7 @@
 ﻿using ClubRecreativo.Application.Interfaces;
 using ClubRecreativo.Domain.Entities;
 using ClubRecreativo.Domain.Interfaces;
+using ClubRecreativo.Shared.Exceptions;
 
 namespace ClubRecreativo.Application.Services
 {
@@ -32,24 +33,26 @@ namespace ClubRecreativo.Application.Services
         {
             var acceso = await _accesoRepository.GetAccesoByIdAsync(accesoId);
 
-            if (acceso != null && acceso.FechaSalida == null)
+            if (acceso == null)
+                throw new NotFoundException($"El acceso con ID {accesoId} no fue encontrado.");
+
+            if (acceso.FechaSalida != null)
+                throw new BusinessException("La salida ya ha sido registrada para este acceso.");
+
+            acceso.FechaSalida = DateTime.UtcNow;
+            await _accesoRepository.UpdateAsync(acceso);
+
+            var cliente = await _clienteRepository.GetClienteByIdAsync(acceso.ClienteId);
+            if (cliente != null)
             {
-                acceso.FechaSalida = DateTime.UtcNow;
-                await _accesoRepository.UpdateAsync(acceso);
+                var asunto = "Gracias por tu visita al Club Recreativo";
+                var cuerpo = $"Hola {cliente.NombreCompleto},<br><br>" +
+                             $"Gracias por tu visita. Aquí están los detalles de tu acceso:<br>" +
+                             $"<b>Hora de entrada:</b> {acceso.FechaEntrada}<br>" +
+                             $"<b>Hora de salida:</b> {acceso.FechaSalida}<br><br>" +
+                             $"¡Esperamos verte pronto!";
 
-                var cliente = await _clienteRepository.GetClienteByIdAsync(acceso.ClienteId);
-
-                if (cliente != null)
-                {
-                    var asunto = "Gracias por tu visita al Club Recreativo";
-                    var cuerpo = $"Hola {cliente.NombreCompleto},<br><br>" +
-                                 $"Gracias por tu visita. Aquí están los detalles de tu acceso:<br>" +
-                                 $"<b>Hora de entrada:</b> {acceso.FechaEntrada}<br>" +
-                                 $"<b>Hora de salida:</b> {acceso.FechaSalida}<br><br>" +
-                                 $"¡Esperamos verte pronto!";
-
-                    await _emailService.EnviarCorreoAsync(cliente.Email, asunto, cuerpo);
-                }
+                await _emailService.EnviarCorreoAsync(cliente.Email, asunto, cuerpo);
             }
         }
     }

@@ -1,6 +1,7 @@
 ﻿using ClubRecreativo.Application.Interfaces;
 using ClubRecreativo.Domain.Entities;
 using ClubRecreativo.Domain.Interfaces;
+using ClubRecreativo.Shared.Exceptions;
 
 namespace ClubRecreativo.Application.Services
 {
@@ -20,7 +21,11 @@ namespace ClubRecreativo.Application.Services
 
         public async Task<Cliente> ObtenerPorIdAsync(int id)
         {
-            return await _clienteRepository.GetClienteByIdAsync(id);
+            var cliente = await _clienteRepository.GetClienteByIdAsync(id);
+            if (cliente == null)
+                throw new NotFoundException($"El cliente con ID {id} no fue encontrado.");
+
+            return cliente;
         }
 
         public async Task CrearAsync(Cliente cliente)
@@ -30,11 +35,19 @@ namespace ClubRecreativo.Application.Services
 
         public async Task ActualizarAsync(Cliente cliente)
         {
+            var existente = await _clienteRepository.GetClienteByIdAsync(cliente.Id);
+            if (existente == null)
+                throw new NotFoundException("No se puede actualizar un cliente inexistente.");
+
             await _clienteRepository.UpdateAsync(cliente);
         }
 
         public async Task EliminarAsync(int id)
         {
+            var cliente = await _clienteRepository.GetClienteByIdAsync(id);
+            if (cliente == null)
+                throw new NotFoundException("No se puede eliminar un cliente inexistente.");
+
             await _clienteRepository.DeleteAsync(id);
         }
     }
