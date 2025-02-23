@@ -75,20 +75,3 @@ estacionamiento, y horas de entrada y salida.
 electrónico a los visitantes y miembros con un mensaje de agradecimiento,
 incluyendo la hora de entrada y salida de su última visita. Esta acción se ejecuta
 automáticamente al registrar una salida.
-5
-B. Puntos a considerar
-A continuación, se listará los puntos que debe tener en cuenta al momento de realizar el
-caso práctico:
-● Endpoints RESTful: Debe enfocar su esfuerzo en el desarrollo de los endpoints
-RESTful necesarios para cumplir con los objetivos planteados de este caso práctico.
-● Modelos de Datos y Base de Datos: Definir los modelos de datos necesarios e
-implementar una base de datos apropiada para el requerimiento y proporcionar
-scripts de migración de esquema y datos iniciales si es necesario.
-● Pruebas Unitarias: Escribir pruebas unitarias para asegurar la funcionalidad
-correcta del backend.
-● Guía de Despliegue y Uso: Proveer una guía clara sobre cómo desplegar y utilizar el
-API (puede incluirlo en el README).
-● Seguridad: Implementar medidas de seguridad para la protección y resguardo de
-los datos.
-● Control de Roles: Implementar un sistema de control de roles que permita definir
-diferentes niveles de acceso (por ejemplo, administrador y personal autorizado).
