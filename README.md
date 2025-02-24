@@ -75,3 +75,36 @@ estacionamiento, y horas de entrada y salida.
 electrónico a los visitantes y miembros con un mensaje de agradecimiento,
 incluyendo la hora de entrada y salida de su última visita. Esta acción se ejecuta
 automáticamente al registrar una salida.
+
+# Documentación del Proyecto
+
+🚀 Instrucciones de Instalación
+🔧 1. Prerrequisitos
+.NET 6.0 SDK o superior
+Docker Desktop instalado y ejecutándose.
+Postman (opcional para pruebas API).
+
+🐳 2. Instalación de Docker
+Verificar instalación de Docker: docker --version
+
+📝 3. Configurar Docker Compose
+Crea un archivo llamado docker-compose.yml en la raíz del proyecto: version: '3.1'
+services:
+  mysql:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root1234
+    ports:
+      - "3306:3306"
+
+🗄️ 4. Importar las tablas y los datos
+Coloca los archivos init.sql y data.sql en la raíz del proyecto.
+
+  Ejecuta el contenedor de Docker: docker-compose up -d
+  Verifica que el contenedor esté en ejecución: docker ps
+  Accede al contenedor y verifica la base de datos: docker exec -it clubrecreativo-mysql bash
+                                                      mysql -u root -proot1234
+
+
+
