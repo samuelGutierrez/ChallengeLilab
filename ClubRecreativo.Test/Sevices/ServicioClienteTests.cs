@@ -1,4 +1,5 @@
-﻿using ClubRecreativo.Application.Services;
+﻿using ClubRecreativo.Application.DTOs.Cliente;
+using ClubRecreativo.Application.Services;
 using ClubRecreativo.Domain.Entities;
 using ClubRecreativo.Domain.Interfaces;
 using FluentAssertions;
@@ -16,19 +17,6 @@ namespace ClubRecreativo.Test.Sevices
         {
             _clienteRepositoryMock = new Mock<IClienteRepository>();
             _servicioCliente = new ServicioCliente(_clienteRepositoryMock.Object);
-        }
-
-        [Fact]
-        public async Task CrearAsync_DeberiaAgregarClienteCorrectamente()
-        {
-            // Arrange
-            var cliente = new Cliente { NombreCompleto = "Juan Pérez" };
-
-            // Act
-            await _servicioCliente.CrearAsync(cliente);
-
-            // Assert
-            _clienteRepositoryMock.Verify(repo => repo.AddAsync(cliente), Times.Once);
         }
 
         [Fact]

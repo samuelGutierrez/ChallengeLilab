@@ -1,4 +1,5 @@
-﻿using ClubRecreativo.Application.Interfaces;
+﻿using ClubRecreativo.Application.DTOs.Cliente;
+using ClubRecreativo.Application.Interfaces;
 using ClubRecreativo.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -35,17 +36,16 @@ namespace ClubRecreativo.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CrearCliente([FromBody] Cliente cliente)
+        public async Task<IActionResult> CrearCliente([FromBody] ClienteDto cliente)
         {
             await _servicioCliente.CrearAsync(cliente);
             return Ok("Cliente registrado correctamente");
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> ActualizarCliente(int id, [FromBody] Cliente cliente)
+        public async Task<IActionResult> ActualizarCliente(int id, [FromBody] ClienteDto cliente)
         {
-            cliente.Id = id;
-            await _servicioCliente.ActualizarAsync(cliente);
+            await _servicioCliente.ActualizarAsync(cliente,id);
             return Ok("Cliente actualizado correctamente");
         }
 

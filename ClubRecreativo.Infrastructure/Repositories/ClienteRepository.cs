@@ -24,6 +24,11 @@ namespace ClubRecreativo.Infrastructure.Repositories
             return await _context.Clientes.FindAsync(id);
         }
 
+        public async Task<Cliente> GetClienteByNombreAsync(string name)
+        {
+            return await _context.Clientes.FirstOrDefaultAsync(c => c.NombreCompleto.Trim().ToLower() == name.Trim().ToLower());
+        }
+
         public async Task AddAsync(Cliente cliente)
         {
             await _context.Clientes.AddAsync(cliente);

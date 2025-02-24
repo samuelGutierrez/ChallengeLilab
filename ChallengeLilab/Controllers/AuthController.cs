@@ -1,4 +1,5 @@
-﻿using ClubRecreativo.Application.Interfaces;
+﻿using ClubRecreativo.Application.DTOs.Auth;
+using ClubRecreativo.Application.Interfaces;
 using ClubRecreativo.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -39,7 +40,7 @@ namespace ClubRecreativo.Controllers
         [HttpPost("login")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> Login([FromBody] Usuario login)
+        public async Task<IActionResult> Login([FromBody] LoginRequest login)
         {
             var usuario = await _servicioUsuario.AutenticarAsync(login.UsuarioNombre, login.Contrasena);
 
@@ -56,11 +57,11 @@ namespace ClubRecreativo.Controllers
         /// </summary>
         /// <param name="usuario">El usuario autenticado.</param>
         /// <returns>Un string con el token JWT.</returns>
-        private string GenerateJwtToken(Usuario usuario)
+        private string GenerateJwtToken(Usuarios usuario)
         {
             var claims = new[]
             {
-                new Claim(ClaimTypes.Name, usuario.UsuarioNombre),
+                new Claim(ClaimTypes.Name, usuario.Usuario),
                 new Claim(ClaimTypes.Role, usuario.Rol.Nombre)
             };
 

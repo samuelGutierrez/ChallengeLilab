@@ -17,10 +17,10 @@ namespace ClubRecreativo.Test.Integration
         [Fact]
         public async Task CrearYObtenerUsuario_DeberiaFuncionarCorrectamente()
         {
-            var usuario = new Usuario
+            var usuario = new Usuarios
             {
                 NombreCompleto = "Admin User",
-                UsuarioNombre = "admin",
+                Usuario = "admin",
                 Contrasena = "1234",
                 RolId = 1
             };
@@ -30,16 +30,16 @@ namespace ClubRecreativo.Test.Integration
             var usuarioObtenido = await _usuarioRepository.GetByIdAsync(usuario.Id);
 
             usuarioObtenido.Should().NotBeNull();
-            usuarioObtenido.UsuarioNombre.Should().Be("admin");
+            usuarioObtenido.Usuario.Should().Be("admin");
         }
 
         [Fact]
         public async Task AutenticarUsuario_DeberiaRetornarUsuarioValido()
         {
-            var usuario = new Usuario
+            var usuario = new Usuarios
             {
                 NombreCompleto = "Test User",
-                UsuarioNombre = "testuser",
+                Usuario = "testuser",
                 Contrasena = "password",
                 RolId = 2
             };
@@ -49,7 +49,7 @@ namespace ClubRecreativo.Test.Integration
             var usuarioAutenticado = await _usuarioRepository.GetUsuarioPorCredencialesAsync("testuser", "password");
 
             usuarioAutenticado.Should().NotBeNull();
-            usuarioAutenticado.UsuarioNombre.Should().Be("testuser");
+            usuarioAutenticado.Usuario.Should().Be("testuser");
         }
     }
 }

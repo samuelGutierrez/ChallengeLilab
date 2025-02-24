@@ -14,9 +14,9 @@ namespace ClubRecreativo.Application.Services
             _vehiculoRepository = vehiculoRepository;
         }
 
-        public async Task<IEnumerable<Vehiculo>> ObtenerVehiculosPorAccesoAsync(int accesoId)
+        public async Task<IEnumerable<Vehiculo>> ObtenerVehiculosPorAccesoAsync()
         {
-            return await _vehiculoRepository.GetVehiculosByAccesoIdAsync(accesoId);
+            return await _vehiculoRepository.GetVehiculosAsync();
         }
 
         public async Task RegistrarVehiculoAsync(Vehiculo vehiculo)
@@ -37,5 +37,6 @@ namespace ClubRecreativo.Application.Services
             vehiculo.FechaSalida = DateTime.UtcNow;
             await _vehiculoRepository.UpdateAsync(vehiculo);
         }
+
     }
 }

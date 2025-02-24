@@ -1,4 +1,5 @@
-﻿using ClubRecreativo.Application.Interfaces;
+﻿using ClubRecreativo.Application.DTOs.Usuarios;
+using ClubRecreativo.Application.Interfaces;
 using ClubRecreativo.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -40,7 +41,7 @@ namespace ClubRecreativo.Controllers
         /// <param name="usuario">Información del usuario a crear.</param>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> CrearUsuario([FromBody] Usuario usuario)
+        public async Task<IActionResult> CrearUsuario([FromBody] UsuarioDto usuario)
         {
             await _servicioUsuario.CrearAsync(usuario);
             return Ok("Usuario creado correctamente.");
@@ -53,10 +54,9 @@ namespace ClubRecreativo.Controllers
         /// <param name="usuario">Nuevos datos del usuario.</param>
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> ActualizarUsuario(int id, [FromBody] Usuario usuario)
+        public async Task<IActionResult> ActualizarUsuario(int id, [FromBody] UsuarioDto usuario)
         {
-            usuario.Id = id;
-            await _servicioUsuario.ActualizarAsync(usuario);
+            await _servicioUsuario.ActualizarAsync(usuario,id);
             return Ok("Usuario actualizado correctamente.");
         }
 

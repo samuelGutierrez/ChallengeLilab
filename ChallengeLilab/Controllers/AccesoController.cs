@@ -1,4 +1,5 @@
-﻿using ClubRecreativo.Application.Interfaces;
+﻿using ClubRecreativo.Application.DTOs.Acceso;
+using ClubRecreativo.Application.Interfaces;
 using ClubRecreativo.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -51,7 +52,7 @@ namespace ClubRecreativo.Controllers
         [HttpPost("entrada")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> RegistrarEntrada([FromBody] Acceso acceso)
+        public async Task<IActionResult> RegistrarEntrada([FromBody] EntradaDto acceso)
         {
             await _servicioAcceso.RegistrarEntradaAsync(acceso);
             return Ok("Entrada registrada correctamente");

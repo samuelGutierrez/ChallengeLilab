@@ -7,6 +7,5 @@
         public Cliente Cliente { get; set; }
         public DateTime FechaEntrada { get; set; }
         public DateTime? FechaSalida { get; set; }
-        public ICollection<Vehiculo> Vehiculos { get; set; }
     }
 }

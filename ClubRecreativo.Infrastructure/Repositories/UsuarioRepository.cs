@@ -14,30 +14,30 @@ namespace ClubRecreativo.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<Usuario> GetUsuarioPorCredencialesAsync(string usuario, string contrasena)
+        public async Task<Usuarios> GetUsuarioPorCredencialesAsync(string usuario, string contrasena)
         {
             return await _context.Usuarios
                 .Include(u => u.Rol)
-                .FirstOrDefaultAsync(u => u.UsuarioNombre == usuario && u.Contrasena == contrasena);
+                .FirstOrDefaultAsync(u => u.Usuario == usuario && u.Contrasena == contrasena);
         }
 
-        public async Task<IEnumerable<Usuario>> GetUsuariosAsync()
+        public async Task<IEnumerable<Usuarios>> GetUsuariosAsync()
         {
             return await _context.Usuarios.Include(u => u.Rol).ToListAsync();
         }
 
-        public async Task<Usuario> GetByIdAsync(int id)
+        public async Task<Usuarios> GetByIdAsync(int id)
         {
             return await _context.Usuarios.FindAsync(id);
         }
 
-        public async Task AddAsync(Usuario usuario)
+        public async Task AddAsync(Usuarios usuario)
         {
             await _context.Usuarios.AddAsync(usuario);
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(Usuario usuario)
+        public async Task UpdateAsync(Usuarios usuario)
         {
             _context.Usuarios.Update(usuario);
             await _context.SaveChangesAsync();

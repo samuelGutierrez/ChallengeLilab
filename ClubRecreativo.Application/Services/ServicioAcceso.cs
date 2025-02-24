@@ -1,4 +1,5 @@
-﻿using ClubRecreativo.Application.Interfaces;
+﻿using ClubRecreativo.Application.DTOs.Acceso;
+using ClubRecreativo.Application.Interfaces;
 using ClubRecreativo.Domain.Entities;
 using ClubRecreativo.Domain.Interfaces;
 using ClubRecreativo.Shared.Exceptions;
@@ -10,12 +11,14 @@ namespace ClubRecreativo.Application.Services
         private readonly IAccesoRepository _accesoRepository;
         private readonly IClienteRepository _clienteRepository;
         private readonly IEmailService _emailService;
+        private readonly IVehiculoRepository _vehiculoRepository;
 
-        public ServicioAcceso(IAccesoRepository accesoRepository, IClienteRepository clienteRepository, IEmailService emailService)
+        public ServicioAcceso(IAccesoRepository accesoRepository, IClienteRepository clienteRepository, IEmailService emailService, IVehiculoRepository vehiculoRepository)
         {
             _accesoRepository = accesoRepository;
             _clienteRepository = clienteRepository;
             _emailService = emailService;
+            _vehiculoRepository = vehiculoRepository;
         }
 
         public async Task<IEnumerable<Acceso>> ObtenerAccesosPorClienteAsync(int clienteId)
@@ -23,10 +26,51 @@ namespace ClubRecreativo.Application.Services
             return await _accesoRepository.GetAccesosByClienteIdAsync(clienteId);
         }
 
-        public async Task RegistrarEntradaAsync(Acceso acceso)
+        public async Task RegistrarEntradaAsync(EntradaDto dto)
         {
-            acceso.FechaEntrada = DateTime.UtcNow;
+            // Verificar si la ubicación está libre
+            var ubicacionOcupada = await _vehiculoRepository.EstaUbicacionOcupadaAsync(dto.UbicacionEstacionamientoId);
+            if (ubicacionOcupada)
+            {
+                throw new BusinessException($"La ubicación de estacionamiento con ID {dto.UbicacionEstacionamientoId} se encuentra ocupada.");
+            }
+
+            // Verificar si el cliente existe por nombre
+            var cliente = await _clienteRepository.GetClienteByNombreAsync(dto.NombreCliente);
+            if (cliente == null)
+            {
+                cliente = new Cliente
+                {
+                    NombreCompleto = dto.NombreCliente
+                };
+                await _clienteRepository.AddAsync(cliente);
+            }
+
+            // Registrar el acceso
+            var acceso = new Acceso
+            {
+                ClienteId = cliente.Id,
+                FechaEntrada = DateTime.UtcNow
+            };
+
             await _accesoRepository.AddAsync(acceso);
+
+            var vehiculo = await _vehiculoRepository.GetVehiculoByPlacaAsync(dto.Placa);
+
+            if (vehiculo == null)
+            {
+                vehiculo = new Vehiculo
+                {
+                    Marca = dto.Marca,
+                    Modelo = dto.Modelo,
+                    Placa = dto.Placa,
+                    AccesoId = acceso.Id,
+                    ValetParkingId = dto.ValetParkingId,
+                    UbicacionEstacionamientoId = dto.UbicacionEstacionamientoId,
+                    FechaEntrada = DateTime.UtcNow
+                };
+                await _vehiculoRepository.AddAsync(vehiculo);
+            }
         }
 
         public async Task RegistrarSalidaAsync(int accesoId)
@@ -41,6 +85,13 @@ namespace ClubRecreativo.Application.Services
 
             acceso.FechaSalida = DateTime.UtcNow;
             await _accesoRepository.UpdateAsync(acceso);
+
+            var vehiculo = await _vehiculoRepository.GetVehiculosByAccesoIdAsync(acceso.Id);
+            if (vehiculo != null && vehiculo.FechaSalida == null)
+            {
+                vehiculo.FechaSalida = DateTime.UtcNow;
+                await _vehiculoRepository.UpdateAsync(vehiculo);
+            }
 
             var cliente = await _clienteRepository.GetClienteByIdAsync(acceso.ClienteId);
             if (cliente != null)

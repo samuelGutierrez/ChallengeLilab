@@ -1,4 +1,5 @@
-﻿using ClubRecreativo.Application.Interfaces;
+﻿using ClubRecreativo.Application.DTOs.Cliente;
+using ClubRecreativo.Application.Interfaces;
 using ClubRecreativo.Domain.Entities;
 using ClubRecreativo.Domain.Interfaces;
 using ClubRecreativo.Shared.Exceptions;
@@ -28,18 +29,31 @@ namespace ClubRecreativo.Application.Services
             return cliente;
         }
 
-        public async Task CrearAsync(Cliente cliente)
+        public async Task CrearAsync(ClienteDto dto)
         {
+            Cliente cliente = new Cliente
+            {
+                Email = dto.Email,
+                NombreCompleto = dto.NombreCompleto,
+                Telefono = dto.Telefono,
+                TipoCliente = dto.TipoCliente,
+            };
+
             await _clienteRepository.AddAsync(cliente);
         }
 
-        public async Task ActualizarAsync(Cliente cliente)
+        public async Task ActualizarAsync(ClienteDto dto, int id)
         {
-            var existente = await _clienteRepository.GetClienteByIdAsync(cliente.Id);
+            var existente = await _clienteRepository.GetClienteByIdAsync(id);
             if (existente == null)
                 throw new NotFoundException("No se puede actualizar un cliente inexistente.");
 
-            await _clienteRepository.UpdateAsync(cliente);
+            existente.Email = dto.Email;
+            existente.TipoCliente = dto.TipoCliente;
+            existente.Telefono = dto.Telefono;
+            existente.NombreCompleto = dto.NombreCompleto;
+
+            await _clienteRepository.UpdateAsync(existente);
         }
 
         public async Task EliminarAsync(int id)

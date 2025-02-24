@@ -1,8 +1,7 @@
-﻿namespace ClubRecreativo.Domain.Entities
+﻿namespace ClubRecreativo.Application.DTOs.Cliente
 {
-    public class Cliente
+    public class ClienteDto
     {
-        public int Id { get; set; }
         public string NombreCompleto { get; set; }
         public string Email { get; set; }
         public string Telefono { get; set; }

@@ -4,11 +4,11 @@ namespace ClubRecreativo.Domain.Interfaces
 {
     public interface IUsuarioRepository
     {
-        Task<Usuario> GetUsuarioPorCredencialesAsync(string usuario, string contrasena);
-        Task<IEnumerable<Usuario>> GetUsuariosAsync();
-        Task<Usuario> GetByIdAsync(int id);
-        Task AddAsync(Usuario usuario);
-        Task UpdateAsync(Usuario usuario);
+        Task<Usuarios> GetUsuarioPorCredencialesAsync(string usuario, string contrasena);
+        Task<IEnumerable<Usuarios>> GetUsuariosAsync();
+        Task<Usuarios> GetByIdAsync(int id);
+        Task AddAsync(Usuarios usuario);
+        Task UpdateAsync(Usuarios usuario);
         Task DeleteAsync(int id);
     }
 }

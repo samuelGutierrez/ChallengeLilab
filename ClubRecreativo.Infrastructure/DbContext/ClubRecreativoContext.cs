@@ -7,12 +7,12 @@ namespace ClubRecreativo.Infrastructure.DbContext
     {
         public ClubRecreativoContext(DbContextOptions<ClubRecreativoContext> options) : base(options) { }
 
-        public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Usuarios> Usuarios { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Acceso> Accesos { get; set; }
         public DbSet<Vehiculo> Vehiculos { get; set; }
-        public DbSet<ValetParking> ValetParkings { get; set; }
+        public DbSet<ValetParking> ValetParking { get; set; }
         public DbSet<UbicacionEstacionamiento> UbicacionesEstacionamiento { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

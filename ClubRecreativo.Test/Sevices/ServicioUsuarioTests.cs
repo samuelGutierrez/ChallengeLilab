@@ -22,7 +22,7 @@ namespace ClubRecreativo.Test.Sevices
         public async Task AutenticarAsync_UsuarioValido_DeberiaRetornarUsuario()
         {
             // Arrange
-            var usuarioEsperado = new Usuario { UsuarioNombre = "admin", Contrasena = "1234" };
+            var usuarioEsperado = new Usuarios { Usuario = "admin", Contrasena = "1234" };
             _usuarioRepositoryMock.Setup(repo => repo.GetUsuarioPorCredencialesAsync("admin", "1234"))
                 .ReturnsAsync(usuarioEsperado);
 
@@ -31,7 +31,7 @@ namespace ClubRecreativo.Test.Sevices
 
             // Assert
             resultado.Should().NotBeNull();
-            resultado.UsuarioNombre.Should().Be("admin");
+            resultado.Usuario.Should().Be("admin");
         }
 
         [Fact]
@@ -39,7 +39,7 @@ namespace ClubRecreativo.Test.Sevices
         {
             // Arrange
             _usuarioRepositoryMock.Setup(repo => repo.GetUsuarioPorCredencialesAsync("admin", "wrongpassword"))
-                .ReturnsAsync((Usuario)null);
+                .ReturnsAsync((Usuarios)null);
 
             // Act
             var resultado = await _servicioUsuario.AutenticarAsync("admin", "wrongpassword");

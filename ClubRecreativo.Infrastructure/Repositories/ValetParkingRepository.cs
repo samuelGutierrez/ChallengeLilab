@@ -16,23 +16,23 @@ namespace ClubRecreativo.Infrastructure.Repositories
 
         public async Task<IEnumerable<ValetParking>> GetAllValetParkingsAsync()
         {
-            return await _context.ValetParkings.ToListAsync();
+            return await _context.ValetParking.ToListAsync();
         }
 
         public async Task<ValetParking> GetValetParkingByIdAsync(int id)
         {
-            return await _context.ValetParkings.FindAsync(id);
+            return await _context.ValetParking.FindAsync(id);
         }
 
         public async Task AddAsync(ValetParking valetParking)
         {
-            await _context.ValetParkings.AddAsync(valetParking);
+            await _context.ValetParking.AddAsync(valetParking);
             await _context.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(ValetParking valetParking)
         {
-            _context.ValetParkings.Update(valetParking);
+            _context.ValetParking.Update(valetParking);
             await _context.SaveChangesAsync();
         }
 
@@ -41,7 +41,7 @@ namespace ClubRecreativo.Infrastructure.Repositories
             var valet = await GetValetParkingByIdAsync(id);
             if (valet != null)
             {
-                _context.ValetParkings.Remove(valet);
+                _context.ValetParking.Remove(valet);
                 await _context.SaveChangesAsync();
             }
         }

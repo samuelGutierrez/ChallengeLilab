@@ -2,6 +2,7 @@
 using ClubRecreativo.Domain.Interfaces;
 using ClubRecreativo.Infrastructure.DbContext;
 using Microsoft.EntityFrameworkCore;
+using System.Xml.Linq;
 
 namespace ClubRecreativo.Infrastructure.Repositories
 {
@@ -14,14 +15,27 @@ namespace ClubRecreativo.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Vehiculo>> GetVehiculosByAccesoIdAsync(int accesoId)
+        public async Task<Vehiculo> GetVehiculosByAccesoIdAsync(int accesoId)
         {
             return await _context.Vehiculos
                 .Include(v => v.Acceso)
                 .Include(v => v.ValetParking)
                 .Include(v => v.UbicacionEstacionamiento)
-                .Where(v => v.AccesoId == accesoId)
+                .Where(v => v.AccesoId == accesoId).FirstOrDefaultAsync();
+        }
+
+        public async Task<IEnumerable<Vehiculo>> GetVehiculosAsync()
+        {
+            return await _context.Vehiculos
+                .Include(v => v.Acceso)
+                .Include(v => v.ValetParking)
+                .Include(v => v.UbicacionEstacionamiento)
                 .ToListAsync();
+        }
+
+        public async Task<Vehiculo> GetVehiculoByPlacaAsync(string placa)
+        {
+            return await _context.Vehiculos.FirstOrDefaultAsync(c => c.Placa.Trim().ToLower() == placa.Trim().ToLower());
         }
 
         public async Task<Vehiculo> GetVehiculoByIdAsync(int id)
@@ -52,6 +66,12 @@ namespace ClubRecreativo.Infrastructure.Repositories
                 _context.Vehiculos.Remove(vehiculo);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public async Task<bool> EstaUbicacionOcupadaAsync(int ubicacionEstacionamientoId)
+        {
+            return await _context.Vehiculos
+                .AnyAsync(v => v.UbicacionEstacionamientoId == ubicacionEstacionamientoId && v.FechaSalida == null);
         }
     }
 }

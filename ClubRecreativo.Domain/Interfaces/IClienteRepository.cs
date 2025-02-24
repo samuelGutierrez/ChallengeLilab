@@ -9,5 +9,6 @@ namespace ClubRecreativo.Domain.Interfaces
         Task AddAsync(Cliente cliente);
         Task UpdateAsync(Cliente cliente);
         Task DeleteAsync(int id);
+        Task<Cliente> GetClienteByNombreAsync(string name);
     }
 }
